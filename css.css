@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+#slideshow-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 500ms ease-in-out;
+}
+
+#slideshow-container.hidden {
+  opacity: 0;
+}
+
+#slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

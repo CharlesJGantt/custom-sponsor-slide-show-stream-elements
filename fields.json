@@ -1,0 +1,50 @@
+let images = [];
+let displayTime = 5000;
+let hiddenTime = 180000;
+let fadeTime = 500;
+let currentIndex = 0;
+
+const container = document.getElementById('slideshow-container');
+const image = document.getElementById('slide-image');
+
+window.addEventListener('onWidgetLoad', function (obj) {
+  const fields = obj.detail.fieldData || {};
+
+  images = [
+    fields.imageOneUrl,
+    fields.imageTwoUrl,
+    fields.imageThreeUrl
+  ].filter(Boolean);
+
+  displayTime = secondsToMilliseconds(fields.displayTimeSeconds || 5);
+  hiddenTime = secondsToMilliseconds(fields.hiddenTimeSeconds || 180);
+  fadeTime = parseInt(fields.fadeTimeMilliseconds || 500, 10);
+
+  container.style.transition = `opacity ${fadeTime}ms ease-in-out`;
+
+  if (images.length > 0) {
+    showCurrentSlide();
+  }
+});
+
+function showCurrentSlide() {
+  image.src = images[currentIndex];
+  container.classList.remove('hidden');
+
+  setTimeout(() => {
+    container.classList.add('hidden');
+
+    currentIndex++;
+
+    if (currentIndex >= images.length) {
+      currentIndex = 0;
+      setTimeout(showCurrentSlide, hiddenTime);
+    } else {
+      setTimeout(showCurrentSlide, fadeTime);
+    }
+  }, displayTime);
+}
+
+function secondsToMilliseconds(seconds) {
+  return Math.max(parseFloat(seconds) || 0, 0) * 1000;
+}
